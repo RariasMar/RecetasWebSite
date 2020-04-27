@@ -8,6 +8,13 @@ namespace RecetasWebSite.Domain
     public class IngredientesPasos
     {
         /// <summary>
+        /// Constructor de la clase
+        /// </summary>
+        public IngredientesPasos() {
+            this.Descripcion = new List<string>();
+        }
+
+        /// <summary>
         /// Imagen asociada al paso
         /// </summary>
         public string Cabecera { get; set; }

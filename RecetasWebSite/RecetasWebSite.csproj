@@ -1,12 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk.Web">
-
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UserSecretsId>8e3deaee-0c2b-408e-819f-978ee63e4e8f</UserSecretsId>
   </PropertyGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\RecetasWebSite.BusinessLayer\RecetasWebSite.BusinessLayer.csproj" />
     <ProjectReference Include="..\RecetasWebSite.Domain\RecetasWebSite.Domain.csproj" />
   </ItemGroup>
-
 </Project>

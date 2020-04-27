@@ -9,6 +9,16 @@ namespace RecetasWebSite.Domain
     public class Receta
     {
         /// <summary>
+        /// Constructor de la clase
+        /// </summary>
+        public Receta()
+        {
+            this.Ingredientes = new List<IngredientesPasos>();
+            this.Pasos = new List<IngredientesPasos>();
+            this.Imagenes = new List<string>();
+        }
+
+        /// <summary>
         /// Identificador de la receta
         /// </summary>
         public string Id { get; set; }

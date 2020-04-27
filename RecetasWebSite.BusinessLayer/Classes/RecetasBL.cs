@@ -1,4 +1,5 @@
-﻿using RecetasWebSite.BusinessLayer.Interfaces;
+﻿using Microsoft.Extensions.Options;
+using RecetasWebSite.BusinessLayer.Interfaces;
 using RecetasWebSite.Domain;
 using RecetasWebSite.Repository;
 using System;
@@ -11,6 +12,28 @@ namespace RecetasWebSite.BusinessLayer.Classes
     /// </summary>
     public class RecetasBL : IRecetasBL
     {
+        private readonly RecetasRepositorio repositorio;
+
+        /// <summary>
+        /// Constructor de la clase
+        /// </summary>
+        public RecetasBL(IOptions<Configuration> options) : base()
+        {
+            this.repositorio = new RecetasRepositorio(options.Value);
+        }
+
+        /// <summary>
+        /// Elimina una receta
+        /// </summary>
+        /// <param name="categoria">Categoria de la receta</param>
+        /// <param name="id">Identificador de la receta</param>
+        /// <param name="receta">La receta en sí</param>
+        /// <returns>Devuelve un booleano indicando si la operación ha ido bien o mal</returns>
+        public bool DeleteReceta(string categoria, string id, Receta receta)
+        {
+            return this.repositorio.DeleteReceta(categoria, id, receta).Result;
+        }
+
         /// <summary>
         /// Obtiene una receta según su identificador
         /// </summary>
@@ -19,8 +42,7 @@ namespace RecetasWebSite.BusinessLayer.Classes
         /// <returns>Devuelve la receta que coincide con la identificador pasado por parámetros</returns>
         public Receta GetReceta(string categoria, string id)
         {
-            RecetasRepositorio repositorio = new RecetasRepositorio();
-            return repositorio.GetReceta(categoria, id).Result;
+            return this.repositorio.GetReceta(categoria, id).Result;
         }
 
         /// <summary>
@@ -38,18 +60,17 @@ namespace RecetasWebSite.BusinessLayer.Classes
         /// <returns>Devuelve un listado con todas las recetas</returns>
         public List<Receta> GetRecetas()
         {
-            RecetasRepositorio repositorio = new RecetasRepositorio();
-            return repositorio.GetRecetas().Result;
+            return this.repositorio.GetRecetas().Result;
         }
 
         /// <summary>
         /// Inserta una nueva receta en el sistema
         /// </summary>
         /// <param name="receta">Objeto con la receta a insertar</param>
-        public void InsertReceta(Receta receta)
+        /// <returns>Devuelve un booleano indicando si la operación ha ido bien o mal</returns>
+        public bool InsertReceta(Receta receta)
         {
-            RecetasRepositorio repositorio = new RecetasRepositorio();
-            repositorio.InsertReceta(receta).Wait();
+            return this.repositorio.InsertReceta(receta).Result;
         }
     }
 }

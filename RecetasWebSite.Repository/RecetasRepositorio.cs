@@ -1,9 +1,9 @@
-﻿using RecetasWebSite.Domain;
-using System;
-using System.Collections.Generic;
-using Microsoft.WindowsAzure.Storage;
+﻿using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Table;
 using Newtonsoft.Json;
+using RecetasWebSite.Domain;
+using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace RecetasWebSite.Repository
@@ -13,20 +13,35 @@ namespace RecetasWebSite.Repository
         private CloudStorageAccount cuentaAlmacenamiento;
         private CloudTableClient cliente;
         private CloudTable recetasTabla;
-        private string connectionString = "DefaultEndpointsProtocol=https;AccountName=recetasstrgacc;AccountKey=JuuYh0pQIQnSRBWR51jRLKNfcNo2Q3r3E9KwzHNl0i+zRTn6mNvyTkdV7TmXSBARSKlqcuUQxVTtwVlTUBNUuw==;EndpointSuffix=core.windows.net";
-
+        
         /// <summary>
         /// Constructor de la clase
         /// </summary>
-        public RecetasRepositorio()
+        public RecetasRepositorio(Configuration config)
         {
-            if (!CloudStorageAccount.TryParse(connectionString, out cuentaAlmacenamiento))
+            if (!CloudStorageAccount.TryParse(config.ConnectionString, out cuentaAlmacenamiento))
             {
                 return;
             }
 
             cliente = cuentaAlmacenamiento.CreateCloudTableClient();
             recetasTabla = cliente.GetTableReference("Recetas");
+        }
+
+        /// <summary>
+        /// Elimina una receta
+        /// </summary>
+        /// <param name="categoria">Categoria de la receta</param>
+        /// <param name="id">Identificador de la receta</param>
+        /// <param name="receta">La receta en sí</param>
+        /// <returns>Devuelve un booleano indicando si la operación ha ido bien o mal</returns>
+        public async Task<bool> DeleteReceta(string categoria, string id, Receta receta)
+        {
+            var resultado = await recetasTabla.ExecuteAsync(TableOperation.Retrieve<RecetaEntity>(categoria, id));
+            RecetaEntity recetaEntity = (RecetaEntity)resultado.Result;
+            resultado = await recetasTabla.ExecuteAsync(TableOperation.Delete(recetaEntity));
+
+            return resultado.HttpStatusCode == 204;
         }
 
         /// <summary>
@@ -38,7 +53,7 @@ namespace RecetasWebSite.Repository
         public async Task<Receta> GetReceta(string categoria, string id)
         {
             var resultado = await recetasTabla.ExecuteAsync(TableOperation.Retrieve<RecetaEntity>(categoria, id));
-            RecetaEntity recetaEntity = resultado.Result as RecetaEntity;
+            RecetaEntity recetaEntity = (RecetaEntity)resultado.Result;
             return JsonConvert.DeserializeObject<Receta>(recetaEntity.Receta);
         }
 
@@ -68,7 +83,6 @@ namespace RecetasWebSite.Repository
                 foreach (RecetaEntity receta in resultado)
                 {
                     recetas.Add(JsonConvert.DeserializeObject<Receta>(receta.Receta));
-
                 }
             } while (token != null);
 
@@ -79,11 +93,14 @@ namespace RecetasWebSite.Repository
         /// Inserta una nueva receta en el sistema
         /// </summary>
         /// <param name="receta">Objeto con la receta a insertar</param>
-        public async Task InsertReceta(Receta receta)
+        /// <returns>Devuelve un booleano indicando si la operación ha ido bien o mal</returns>
+        public async Task<bool> InsertReceta(Receta receta)
         {
             RecetaEntity recetaEntity = new RecetaEntity(receta);
             TableOperation insertOrMerge = TableOperation.InsertOrReplace(recetaEntity);
-            await recetasTabla.ExecuteAsync(insertOrMerge);
+            var resultado = await recetasTabla.ExecuteAsync(insertOrMerge);
+
+            return resultado.HttpStatusCode == 204;
         }
     }
 }

@@ -11,6 +11,15 @@ namespace RecetasWebSite.BusinessLayer.Interfaces
     public interface IRecetasBL
     {
         /// <summary>
+        /// Elimina una receta
+        /// </summary>
+        /// <param name="categoria">Categoria de la receta</param>
+        /// <param name="id">Identificador de la receta</param>
+        /// <param name="receta">La receta en sí</param>
+        /// <returns>Devuelve un booleano indicando si la operación ha ido bien o mal</returns>
+        bool DeleteReceta(string categoria, string id, Receta receta);
+
+        /// <summary>
         /// Obtiene una receta según su identificador
         /// </summary>
         /// <param name="categoria">Categoria de la receta</param>
@@ -34,6 +43,7 @@ namespace RecetasWebSite.BusinessLayer.Interfaces
         /// Inserta una nueva receta en el sistema
         /// </summary>
         /// <param name="receta">Objeto con la receta a insertar</param>
-        void InsertReceta(Receta receta);
+        /// <returns>Devuelve un booleano indicando si la operación ha ido bien o mal</returns>
+        bool InsertReceta(Receta receta);
     }
 }
