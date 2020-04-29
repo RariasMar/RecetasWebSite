@@ -3,9 +3,16 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UserSecretsId>8e3deaee-0c2b-408e-819f-978ee63e4e8f</UserSecretsId>
+    <ApplicationInsightsResourceId>/subscriptions/e19d0211-2f4c-44cc-98ed-7a93e0d875de/resourcegroups/RecetasWebSite/providers/microsoft.insights/components/RecetasAppInsight</ApplicationInsightsResourceId>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\RecetasWebSite.BusinessLayer\RecetasWebSite.BusinessLayer.csproj" />
+    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.14.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.2" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\RecetasWebSite.Domain\RecetasWebSite.Domain.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services" />
   </ItemGroup>
 </Project>

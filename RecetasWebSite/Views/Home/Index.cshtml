@@ -14,7 +14,7 @@
                 @foreach (var receta in Model)
                 {
                     <tr>
-                        <td rowspan="2" >
+                        <td rowspan="2">
                             @if (@receta.ImagenPrincipal != null)
                             {
                                 <img src="@receta.ImagenPrincipal" alt="@receta.Nombre" width="100" />
@@ -25,7 +25,8 @@
                             }
                         </td>
                         <td style="font-weight: 500">
-                            @receta.Nombre
+                            <a action="Details" asp-action="Details" asp-controller="Home" asp-route-categoria="@receta.Categoria" asp-route-id="@receta.Id">@receta.Nombre</a>
+
                         </td>
                     </tr>
                     <tr>

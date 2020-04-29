@@ -1,4 +1,6 @@
-﻿using Microsoft.WindowsAzure.Storage;
+﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Table;
 using Newtonsoft.Json;
 using RecetasWebSite.Domain;
@@ -8,25 +10,43 @@ using System.Threading.Tasks;
 
 namespace RecetasWebSite.Repository
 {
-    public class RecetasRepositorio
+    public class RecetasRepositorio : IRecetasRepositorio
     {
-        private CloudStorageAccount cuentaAlmacenamiento;
-        private CloudTableClient cliente;
-        private CloudTable recetasTabla;
-        
+        #region Campos Privados
+
+        //Campos privados que se utilizan en la clase
+        private readonly CloudStorageAccount cuentaAlmacenamiento;
+        private readonly CloudTableClient cliente;
+        private readonly CloudTable recetasTabla;
+        private readonly ILogger<RecetasRepositorio> logger;
+
+        #endregion
+
+        #region Constructor
+
         /// <summary>
         /// Constructor de la clase
         /// </summary>
-        public RecetasRepositorio(Configuration config)
+        public RecetasRepositorio(IOptions<Configuration> options, ILogger<RecetasRepositorio> log)
         {
-            if (!CloudStorageAccount.TryParse(config.ConnectionString, out cuentaAlmacenamiento))
+            this.logger = log;
+
+            if (!CloudStorageAccount.TryParse(options.Value.ConnectionStrings.TableStorageCS, out cuentaAlmacenamiento))
             {
-                return;
+                throw new StorageException($"Formato de connection string erroneo.\nConnection String: {options.Value.ConnectionStrings.TableStorageCS}");
             }
 
             cliente = cuentaAlmacenamiento.CreateCloudTableClient();
             recetasTabla = cliente.GetTableReference("Recetas");
+            if (!recetasTabla.ExistsAsync().Result)
+            {
+                throw new StorageException("La tabla Recetas no existe en la base de datos");
+            }
         }
+
+        #endregion
+
+        #region Métodos Públicos
 
         /// <summary>
         /// Elimina una receta
@@ -53,15 +73,30 @@ namespace RecetasWebSite.Repository
         public async Task<Receta> GetReceta(string categoria, string id)
         {
             var resultado = await recetasTabla.ExecuteAsync(TableOperation.Retrieve<RecetaEntity>(categoria, id));
-            RecetaEntity recetaEntity = (RecetaEntity)resultado.Result;
-            return JsonConvert.DeserializeObject<Receta>(recetaEntity.Receta);
+
+            if (resultado.HttpStatusCode == 404 || resultado.Result == null)
+            {
+                throw new StorageException($"Receta con Id {id} y categoría {categoria} no encontrada en la base de datos.");
+            }
+            else
+            {
+                try
+                {
+                    RecetaEntity recetaEntity = (RecetaEntity)resultado.Result;
+                    return JsonConvert.DeserializeObject<Receta>(recetaEntity.Receta);
+                }
+                catch (Exception ex)
+                {
+                    throw new StorageException($"El formato JSON del objeto de base de datos no coincide con el esperado en código.\n Id: {id}\nCategoria: {categoria}\nJson: {resultado.Result}", ex);
+                }
+            }
         }
 
         /// <summary>
         /// Busca recetas basado en unos criterios de búsqueda
         /// </summary>
         /// <returns>Devuelve un listado con todas las recetas que satisfacen los criteriosde búsqueda</returns>
-        public List<Receta> GetRecetaBy()
+        public Task<List<Receta>> GetRecetaBy()
         {
             throw new NotImplementedException();
         }
@@ -75,16 +110,34 @@ namespace RecetasWebSite.Repository
             List<Receta> recetas = new List<Receta>();
             TableQuery<RecetaEntity> recetasQuery = new TableQuery<RecetaEntity>();
             TableContinuationToken token = null;
+            int totalCount = 0;
 
-            do
+            using (logger.BeginScope("Obteniendo todas las recetas"))
             {
-                TableQuerySegment<RecetaEntity> resultado = await recetasTabla.ExecuteQuerySegmentedAsync(recetasQuery, new TableContinuationToken());
-                token = resultado.ContinuationToken;
-                foreach (RecetaEntity receta in resultado)
+                do
                 {
-                    recetas.Add(JsonConvert.DeserializeObject<Receta>(receta.Receta));
+                    TableQuerySegment<RecetaEntity> resultado = await recetasTabla.ExecuteQuerySegmentedAsync(recetasQuery, new TableContinuationToken());
+                    token = resultado.ContinuationToken;
+                    totalCount += resultado.Results.Count;
+
+                    foreach (RecetaEntity receta in resultado)
+                    {
+                        try
+                        {
+                            recetas.Add(JsonConvert.DeserializeObject<Receta>(receta.Receta));
+                        }
+                        catch (Exception ex)
+                        {
+                            this.logger.LogWarning(ex, $"El formato JSON del objeto de base de datos no coincide con el esperado en código.\nJson: {receta.Receta}");
+                        }
+                    }
+                } while (token != null);
+
+                if (recetas.Count != totalCount)
+                {
+                    this.logger.LogWarning($"Existen recetas en el repositorio con un formato de JSON diferente al esperado.\nTotal Esperadp: {totalCount}\nTotal Recibido: {recetas.Count}");
                 }
-            } while (token != null);
+            }
 
             return recetas;
         }
@@ -102,5 +155,7 @@ namespace RecetasWebSite.Repository
 
             return resultado.HttpStatusCode == 204;
         }
+
+        #endregion
     }
 }

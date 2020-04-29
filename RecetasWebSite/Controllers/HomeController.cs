@@ -1,34 +1,28 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using RecetasWebSite.BusinessLayer.Interfaces;
 using RecetasWebSite.Domain;
-using RecetasWebSite.Models;
+using RecetasWebSite.Repository;
 using System.Collections.Generic;
-using System.Diagnostics;
 
 namespace RecetasWebSite.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-        private readonly IRecetasBL _recetasService;
+        private readonly IRecetasRepositorio recetasService;
 
-        public HomeController(ILogger<HomeController> logger, IRecetasBL recetasService)
+        public HomeController(IRecetasRepositorio recetasService)
         {
-            _logger = logger;
-            _recetasService = recetasService;
+            this.recetasService = recetasService;
         }
 
         public IActionResult Index()
         {
-            List<Receta> recetas = this._recetasService.GetRecetas();
+            List<Receta> recetas = this.recetasService.GetRecetas().Result;
             return View(recetas);
         }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
+        public IActionResult Details(string categoria, string id)
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            Receta receta = this.recetasService.GetReceta(categoria, id).Result;
+            return View(receta);
         }
     }
 }

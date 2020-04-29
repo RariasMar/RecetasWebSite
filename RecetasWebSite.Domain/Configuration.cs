@@ -2,6 +2,11 @@
 {
     public class Configuration
     {
-        public string ConnectionString { get; set; }
+        public ConnectionStrings ConnectionStrings { get; set; }
+    }
+
+    public class ConnectionStrings
+    {
+        public string TableStorageCS { get; set; }
     }
 }

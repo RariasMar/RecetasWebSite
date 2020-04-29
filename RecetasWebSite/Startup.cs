@@ -3,9 +3,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using RecetasWebSite.BusinessLayer.Classes;
-using RecetasWebSite.BusinessLayer.Interfaces;
 using RecetasWebSite.Domain;
+using RecetasWebSite.Repository;
 
 namespace RecetasWebSite
 {
@@ -21,9 +20,10 @@ namespace RecetasWebSite
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddSingleton<IRecetasBL, RecetasBL>();
-            services.Configure<Configuration>(Configuration.GetSection("Configuration"));
+            services.AddSingleton<IRecetasRepositorio, RecetasRepositorio>();
+            services.Configure<Configuration>(Configuration);
             services.AddControllersWithViews();
+            services.AddApplicationInsightsTelemetry(Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -35,7 +35,7 @@ namespace RecetasWebSite
             }
             else
             {
-                app.UseExceptionHandler("/Home/Error");
+                app.UseExceptionHandler("/Error");
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
