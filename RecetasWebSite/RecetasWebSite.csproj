@@ -11,6 +11,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\RecetasWebSite.Domain\RecetasWebSite.Domain.csproj" />
+    <ProjectReference Include="..\RecetasWebSite.Repository\RecetasWebSite.Repository.csproj" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Connected Services" />

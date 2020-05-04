@@ -23,6 +23,15 @@ namespace RecetasWebSite.Repository
         #endregion
 
         #region Constructor
+        
+        /// <summary>
+        /// Constructor de la clase
+        /// </summary>
+        public RecetasRepositorio(ILogger<RecetasRepositorio> log, CloudTable recetasTabla)
+        {
+            this.logger = log;
+            this.recetasTabla = recetasTabla;
+        }
 
         /// <summary>
         /// Constructor de la clase
@@ -108,7 +117,6 @@ namespace RecetasWebSite.Repository
         public async Task<List<Receta>> GetRecetas()
         {
             List<Receta> recetas = new List<Receta>();
-            TableQuery<RecetaEntity> recetasQuery = new TableQuery<RecetaEntity>();
             TableContinuationToken token = null;
             int totalCount = 0;
 
@@ -116,7 +124,7 @@ namespace RecetasWebSite.Repository
             {
                 do
                 {
-                    TableQuerySegment<RecetaEntity> resultado = await recetasTabla.ExecuteQuerySegmentedAsync(recetasQuery, new TableContinuationToken());
+                    TableQuerySegment<RecetaEntity> resultado = await recetasTabla.ExecuteQuerySegmentedAsync<RecetaEntity>(new TableQuery<RecetaEntity>(), new TableContinuationToken());
                     token = resultado.ContinuationToken;
                     totalCount += resultado.Results.Count;
 
