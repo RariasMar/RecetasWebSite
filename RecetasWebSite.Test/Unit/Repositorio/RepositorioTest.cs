@@ -14,13 +14,25 @@ using System.Threading.Tasks;
 
 namespace RecetasWebSite.Test.Unit
 {
+    /// <summary>
+    /// Esta clase contendrá los futuros test unitarios de la clase repositorio
+    /// </summary>
     [TestFixture]
     public class RepositorioTest
     {
+        #region Campos Privados
+
         private IRecetasRepositorio recetasRepositorio;
         private Mock<CloudTable> recetasTabla;
         private Mock<ILogger<RecetasRepositorio>> logger;
 
+        #endregion
+
+        #region Setup
+
+        /// <summary>
+        /// Configura los objetos necesarios
+        /// </summary>
         [SetUp]
         public void SetUp()
         {
@@ -29,6 +41,9 @@ namespace RecetasWebSite.Test.Unit
             recetasRepositorio = new RecetasRepositorio(logger.Object, recetasTabla.Object);
         }
 
+        #endregion
+
+        #region Métodos de Tests
         [Test]
         public void GetRecetas_ReturnsAList_WithRecetas()
         {
@@ -40,6 +55,14 @@ namespace RecetasWebSite.Test.Unit
             Assert.IsTrue(true);
         }
 
+        #endregion
+
+        #region Métodos Privados
+
+        /// <summary>
+        /// Devuelve un listado de recetas de prueba
+        /// </summary>
+        /// <returns>Listado con recetas mock</returns>
         private Task<TableQuerySegment<RecetaEntity>> GetRecetas()
         {
             var recetas = new List<RecetaEntity>();
@@ -71,5 +94,7 @@ namespace RecetasWebSite.Test.Unit
             var mockTableQuerySegment = ctor.Invoke(new object[] { recetas }) as TableQuerySegment<RecetaEntity>;
             return Task.FromResult(mockTableQuerySegment);
         }
+
+        #endregion
     }
 }
