@@ -15,15 +15,13 @@ namespace RecetasWebSite.Repository
         #region Campos Privados
 
         //Campos privados que se utilizan en la clase
-        private readonly CloudStorageAccount cuentaAlmacenamiento;
-        private readonly CloudTableClient cliente;
         private readonly CloudTable recetasTabla;
         private readonly ILogger<RecetasRepositorio> logger;
 
         #endregion
 
         #region Constructor
-        
+
         /// <summary>
         /// Constructor de la clase
         /// </summary>
@@ -38,6 +36,9 @@ namespace RecetasWebSite.Repository
         /// </summary>
         public RecetasRepositorio(IOptions<Configuration> options, ILogger<RecetasRepositorio> log)
         {
+            CloudStorageAccount cuentaAlmacenamiento;
+            CloudTableClient cliente;
+
             this.logger = log;
 
             if (!CloudStorageAccount.TryParse(options.Value.ConnectionStrings.TableStorageCS, out cuentaAlmacenamiento))

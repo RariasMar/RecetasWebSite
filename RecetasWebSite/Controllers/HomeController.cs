@@ -6,7 +6,7 @@ using System.Collections.Generic;
 namespace RecetasWebSite.Controllers
 {
     /// <summary>
-    /// Controlador para gestionar todo lo relacionados a las recetas
+    /// Controlador para gestionar lo relacionados a las recetas
     /// </summary>
     public class HomeController : Controller
     {
