@@ -3,7 +3,7 @@ using Microsoft.Extensions.Hosting;
 
 namespace RecetasWebSite
 {
-    public class Program
+    public static class Program
     {
         /// <summary>
         /// 
