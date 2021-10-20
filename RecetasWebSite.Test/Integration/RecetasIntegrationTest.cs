@@ -51,7 +51,7 @@ namespace RecetasWebSite.Test.Integration
         [Test]
         public async Task WhenRouteNotExist_ThenResultIsNotFound()
         {
-            var result = await client.GetAsync("/NonExistingRoute");
+            var result = await client.GetAsync("/api/NonExistingRoute");
             Assert.That(result.StatusCode, Is.EqualTo(HttpStatusCode.NotFound));
         }
 
@@ -62,7 +62,7 @@ namespace RecetasWebSite.Test.Integration
         [Test]
         public async Task GetAllRecetas_ThenResultIsOk()
         {
-            var result = await client.GetAsync("/Home");
+            var result = await client.GetAsync("/api/Recetas");
             Assert.That(result.StatusCode, Is.EqualTo(HttpStatusCode.OK));
         }
 
@@ -73,7 +73,7 @@ namespace RecetasWebSite.Test.Integration
         [Test]
         public async Task GetReceta_WhenCategoriaAndIdIsPassed_ThenResultIsOk()
         {
-            var result = await client.GetAsync("/Home/Details/tartaZanahoria?categoria=Repostería");
+            var result = await client.GetAsync("/api/Recetas/Repostería/tartaZanahoria");
             Assert.That(result.StatusCode, Is.EqualTo(HttpStatusCode.OK));
         }
 
@@ -82,9 +82,9 @@ namespace RecetasWebSite.Test.Integration
         /// </summary>
         /// <returns>Devuelve un 500 Internal server error</returns>
         [Test]
-        public async Task GetReceta_WhenCategoriaAndIdIsNotPassed_ThenResultIsBadRequest()
+        public async Task GetReceta_WhenCategoriaOrIdIsWrong_ThenResultIsBadRequest()
         {
-            var result = await client.GetAsync("/Home/Details");
+            var result = await client.GetAsync("/api/Recetas/Postre/1");
             Assert.That(result.StatusCode, Is.EqualTo(HttpStatusCode.InternalServerError));
         }
 
