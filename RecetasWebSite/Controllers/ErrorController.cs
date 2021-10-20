@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using RecetasWebSite.Models;
 using System.Diagnostics;
 
@@ -11,15 +10,12 @@ namespace RecetasWebSite.Controllers
     /// </summary>
     public class ErrorController : Controller
     {
-        private readonly ILogger<ErrorController> _logger;
-
         /// <summary>
         /// Constructor de la clase
         /// </summary>
         /// <param name="logger"></param>
-        public ErrorController(ILogger<ErrorController> logger)
+        public ErrorController()
         {
-            _logger = logger;
         } 
 
         /// <summary>
