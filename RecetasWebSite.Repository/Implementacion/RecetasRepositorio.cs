@@ -7,6 +7,7 @@ using RecetasWebSite.Domain;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace RecetasWebSite.Repository
 {
@@ -129,15 +130,15 @@ namespace RecetasWebSite.Repository
                     token = resultado.ContinuationToken;
                     totalCount += resultado.Results.Count;
 
-                    foreach (RecetaEntity receta in resultado)
+                    foreach (var receta in resultado.Select(receta => receta.Receta))
                     {
                         try
                         {
-                            recetas.Add(JsonConvert.DeserializeObject<Receta>(receta.Receta));
+                            recetas.Add(JsonConvert.DeserializeObject<Receta>(receta));
                         }
                         catch (Exception ex)
                         {
-                            this.logger.LogWarning(ex, $"El formato JSON del objeto de base de datos no coincide con el esperado en código.\nJson: {receta.Receta}");
+                            this.logger.LogWarning(ex, $"El formato JSON del objeto de base de datos no coincide con el esperado en código.\nJson: {receta}");
                         }
                     }
                 } while (token != null);
