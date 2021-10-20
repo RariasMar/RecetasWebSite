@@ -5,13 +5,13 @@
 
 pr:
   branches:
-    include: dev     
+    include: [dev]     
 
 stages:
   ###################################
   ## Fase de Build
   ###################################
-  - stage: Build Pull Request
+  - stage: 'Build_Pull_Request'
     displayName: 'Building PR Phase'
     jobs:
     - job:
