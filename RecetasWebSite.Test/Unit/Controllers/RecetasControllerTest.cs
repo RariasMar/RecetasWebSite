@@ -98,7 +98,7 @@ namespace RecetasWebSite.API.Test.Unit
             // Assert
             Assert.IsInstanceOf<ActionResult<Receta>>(result);
             Assert.IsInstanceOf<NotFoundResult>(result.Result);
-            Assert.AreEqual(result.Value, null);
+            Assert.AreEqual(null, result.Value);
         }
 
         #endregion
