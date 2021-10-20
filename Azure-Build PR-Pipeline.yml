@@ -3,6 +3,8 @@
 # antes de hacer pull request a la rama master  #
 #################################################
 
+trigger: none
+
 pr:
   branches:
     include: [dev]     
