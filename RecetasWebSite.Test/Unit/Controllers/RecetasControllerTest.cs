@@ -41,7 +41,7 @@ namespace RecetasWebSite.API.Test.Unit
         #region Obtener todas las recetas
 
         /// <summary>
-        /// Comprueba la acci髇 GetRecetas del controlador Recetas con una lista de recetas rellena
+        /// Comprueba la acci贸n GetRecetas del controlador Recetas con una lista de recetas rellena
         /// </summary>
         [Test]
         public void GetRecetas_ReturnsAnObjectList_WithAllRecetas()
@@ -55,7 +55,7 @@ namespace RecetasWebSite.API.Test.Unit
         }
 
         /// <summary>
-        /// Comprueba la acci髇 GetRecetas del controlador Recetas con una lista de recetas vac韆
+        /// Comprueba la acci贸n GetRecetas del controlador Recetas con una lista de recetas vac铆a
         /// </summary>
         [Test]
         public void GetRecetas_ReturnsAnObjectList_WithNoItems()
@@ -74,7 +74,7 @@ namespace RecetasWebSite.API.Test.Unit
         #region Detalles de una receta
 
         /// <summary>
-        /// Comprueba la acci髇 GetReceta del controlador Receta
+        /// Comprueba la acci贸n GetReceta del controlador Receta
         /// </summary>
         [Test]
         public void GetReceta_ReturnsAnObject_WithOneReceta()
@@ -87,7 +87,7 @@ namespace RecetasWebSite.API.Test.Unit
         }
 
         /// <summary>
-        /// Comprueba la acci髇 GetReceta del controlador Receta cuando devuelve un nulo
+        /// Comprueba la acci贸n GetReceta del controlador Receta cuando devuelve un nulo
         /// </summary>
         [Test]
         public void GetReceta_ReturnsAObject_WithNullValue()
@@ -98,12 +98,12 @@ namespace RecetasWebSite.API.Test.Unit
             // Assert
             Assert.IsInstanceOf<ActionResult<Receta>>(result);
             Assert.IsInstanceOf<NotFoundResult>(result.Result);
-            Assert.AreEqual(result.Value, null);
+            Assert.AreEqual(null, result.Value);
         }
 
         #endregion
 
-        #region M閠odos Privados
+        #region M茅todos Privados
 
         /// <summary>
         /// Crea un listado de recetas de prueba
@@ -117,7 +117,7 @@ namespace RecetasWebSite.API.Test.Unit
                 Id = "receta1",
                 Categoria = "Categoria1",
                 Nombre = "Receta1",
-                Descripcion = "Descripci髇 de la receta 1",
+                Descripcion = "Descripci贸n de la receta 1",
                 Ingredientes = new List<IngredientesPasos>(),
                 Pasos = new List<IngredientesPasos>()
             };
@@ -127,7 +127,7 @@ namespace RecetasWebSite.API.Test.Unit
                 Id = "receta2",
                 Categoria = "Categoria2",
                 Nombre = "Receta2",
-                Descripcion = "Descripci髇 de la receta 2",
+                Descripcion = "Descripci贸n de la receta 2",
                 Ingredientes = new List<IngredientesPasos>(),
                 Pasos = new List<IngredientesPasos>()
             };
