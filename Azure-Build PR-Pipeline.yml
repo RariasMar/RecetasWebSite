@@ -7,7 +7,7 @@ trigger: none
 
 pr:
   branches:
-    include: [dev]
+    include: [master]
 
 stages:
   ###################################
