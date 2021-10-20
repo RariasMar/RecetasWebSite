@@ -1,0 +1,47 @@
+################################################# 
+# Pipeline para compilar la solución en DEV     #
+# antes de hacer pull request a la rama master  #
+#################################################
+
+pr:
+  branches:
+    include: dev     
+
+stages:
+  ###################################
+  ## Fase de Build
+  ###################################
+  - stage: Build Pull Request
+    displayName: 'Building PR Phase'
+    jobs:
+    - job:
+      displayName: 'Build Job'
+      pool: 
+        vmImage: 'ubuntu-latest'
+
+      steps:
+      - checkout: self
+        clean: true
+        
+      - task: DotNetCoreCLI@2
+        displayName: 'Restore Packages'
+        inputs:
+          command: restore
+          projects: '$(Parameters.RestoreBuildProjects)'
+        
+      - task: DotNetCoreCLI@2
+        displayName: Build
+        inputs:
+          projects: '$(Parameters.RestoreBuildProjects)'
+          arguments: '--configuration $(BuildConfiguration)'
+      
+      - script: 'echo ''##vso[task.setvariable variable=CONNECTIONSTRINGS__TABLESTORAGECS]$(TableStorageCS)'''
+        displayName: 'Set Environment Variables'
+        
+      - task: DotNetCoreCLI@2
+        displayName: Test
+        inputs:
+          command: test
+          projects: '$(Parameters.TestProjects)'
+          arguments: '--configuration $(BuildConfiguration)'
+

@@ -84,8 +84,8 @@ namespace RecetasWebSite.Test.Integration
         [Test]
         public async Task GetReceta_WhenCategoriaOrIdIsWrong_ThenResultIsBadRequest()
         {
-            var result = await client.GetAsync("/api/Recetas/Postre/1");
-            Assert.That(result.StatusCode, Is.EqualTo(HttpStatusCode.InternalServerError));
+            var result = await client.GetAsync("/api/Recetas/Repostería/tartaZanahoria");
+            Assert.That(result.StatusCode, Is.EqualTo(HttpStatusCode.NotFound));
         }
 
         #endregion

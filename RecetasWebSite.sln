@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29926.136
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RecetasWebSite", "RecetasWebSite\RecetasWebSite.csproj", "{4CE2B01C-88A8-4CE5-B183-83EFD9580733}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RecetasWebSite.Repository", "RecetasWebSite.Repository\RecetasWebSite.Repository.csproj", "{75B69DB3-8B6C-4A42-90E5-9BE498042268}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RecetasWebSite.Domain", "RecetasWebSite.Domain\RecetasWebSite.Domain.csproj", "{F3E4581B-DCD4-44FB-8837-FF5D1BBE35D4}"
@@ -17,7 +15,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{C02074CB-0
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RecetasWebSite.Test", "RecetasWebSite.Test\RecetasWebSite.Test.csproj", "{BA8A94B5-79CC-4DCE-AC85-A6CA7F27F405}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RecetasWebSite.API", "RecetasWebSite.API\RecetasWebSite.API.csproj", "{F9FC225C-257D-456E-9AF8-5F3E3A050C70}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RecetasWebSite.API", "RecetasWebSite.API\RecetasWebSite.API.csproj", "{F9FC225C-257D-456E-9AF8-5F3E3A050C70}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,10 +23,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{4CE2B01C-88A8-4CE5-B183-83EFD9580733}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4CE2B01C-88A8-4CE5-B183-83EFD9580733}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4CE2B01C-88A8-4CE5-B183-83EFD9580733}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4CE2B01C-88A8-4CE5-B183-83EFD9580733}.Release|Any CPU.Build.0 = Release|Any CPU
 		{75B69DB3-8B6C-4A42-90E5-9BE498042268}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{75B69DB3-8B6C-4A42-90E5-9BE498042268}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{75B69DB3-8B6C-4A42-90E5-9BE498042268}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -50,7 +44,6 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{4CE2B01C-88A8-4CE5-B183-83EFD9580733} = {67236D08-ED83-4425-802C-D23782ABB0C1}
 		{75B69DB3-8B6C-4A42-90E5-9BE498042268} = {8B1C6EF8-2F78-415C-879F-DB82DBC5C36C}
 		{F3E4581B-DCD4-44FB-8837-FF5D1BBE35D4} = {8B1C6EF8-2F78-415C-879F-DB82DBC5C36C}
 		{BA8A94B5-79CC-4DCE-AC85-A6CA7F27F405} = {C02074CB-0B19-448C-BBA9-A6D2521E2815}
