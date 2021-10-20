@@ -92,8 +92,8 @@ stages:
           summaryFileLocation: '$(Build.SourcesDirectory)/TestResults/Coverage/coverage.cobertura.xml'
       
       # Run WhiteSource      
-      - task: whitesource.ws-bolt.bolt.wss.WhiteSource Bolt@20
-        displayName: 'WhiteSource Bolt'
+      #- task: whitesource.ws-bolt.bolt.wss.WhiteSource Bolt@20
+      #  displayName: 'WhiteSource Bolt'
       
       # Run SonarCloud Analysis
       - task: SonarCloudAnalyze@1
