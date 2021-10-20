@@ -82,7 +82,7 @@ namespace RecetasWebSite.Repository
         /// <returns>Devuelve la receta que coincide con la identificador pasado por parámetros</returns>
         public async Task<Receta> GetReceta(string categoria, string id)
         {
-            var resultado = await recetasTabla.ExecuteAsync(TableOperation.Retrieve<RecetaEntity>(categoria, id));
+            var resultado = await recetasTabla.ExecuteAsync(TableOperation.Retrieve<RecetaEntity>(categoria, id, null));
 
             if (resultado.HttpStatusCode == 404 || resultado.Result == null)
             {
