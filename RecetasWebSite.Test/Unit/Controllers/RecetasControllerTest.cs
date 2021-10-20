@@ -86,6 +86,21 @@ namespace RecetasWebSite.API.Test.Unit
             Assert.IsAssignableFrom<Receta>(result.Value);
         }
 
+        /// <summary>
+        /// Comprueba la acción GetReceta del controlador Receta cuando devuelve un nulo
+        /// </summary>
+        [Test]
+        public void GetReceta_ReturnsAObject_WithNullValue()
+        {
+            recetasRepositorio.Setup(recetas => recetas.GetReceta(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(GetNullReceta());
+            ActionResult<Receta> result = controller.GetReceta(It.IsAny<string>(), It.IsAny<string>()).Result;
+
+            // Assert
+            Assert.IsInstanceOf<ActionResult<Receta>>(result);
+            Assert.IsInstanceOf<NotFoundResult>(result.Result);
+            Assert.AreEqual(result.Value, null);
+        }
+
         #endregion
 
         #region Métodos Privados
@@ -123,6 +138,15 @@ namespace RecetasWebSite.API.Test.Unit
             return recetas;
         }
 
-        #endregion
-    }
+        /// <summary>
+        /// Devuelve una receta nula
+        /// </summary>
+        /// <returns>Datos de prueba</returns>
+        private Receta GetNullReceta()
+        {
+            return null;
+        }
+
+            #endregion
+        }
 }

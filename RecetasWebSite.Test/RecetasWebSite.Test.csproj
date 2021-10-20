@@ -30,7 +30,6 @@
   <ItemGroup>
     <ProjectReference Include="..\RecetasWebSite.API\RecetasWebSite.API.csproj" />
     <ProjectReference Include="..\RecetasWebSite.Repository\RecetasWebSite.Repository.csproj" />
-    <ProjectReference Include="..\RecetasWebSite\RecetasWebSite.csproj" />
   </ItemGroup>
 
 </Project>
